@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <title>Family tree</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('index') }}">Tree</a>
+    <a href="{{ url_for('login') }}">Sing in</a>
+    <a href="{{ url_for('index') }}">Sing up</a>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+       {% if messages %}
+       <ul>
+           {% for message in messages %}
+           <li>{{ message }}</li>
+           {% endfor %}
+       </ul>
+       {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+</html>
