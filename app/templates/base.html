@@ -8,8 +8,12 @@
   <body>
     <a href="{{ url_for('index') }}">Home</a>
     <a href="{{ url_for('index') }}">Tree</a>
+    {% if current_user.is_anonymous %}
     <a href="{{ url_for('login') }}">Sing in</a>
-    <a href="{{ url_for('index') }}">Sing up</a>
+    <a href="{{ url_for('register') }}">Register</a>
+    {% else %}
+    <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
     <hr>
     {% with messages = get_flashed_messages() %}
        {% if messages %}
