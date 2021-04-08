@@ -6,10 +6,10 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    peoples_in_trees = db.relationship('Peoples_in_trees', backref='author', lazy='dynamic')
+    human = db.relationship('Human', backref='author', lazy='dynamic')
 
     def __repr__(self):
-        return '<User {}'.format(self.username)
+        return '<id: {}, username: {}>'.format(self.id, self.username)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -18,13 +18,17 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Peoples_in_trees(db.Model):
+class Human(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey(('user.id')), index=True)
-    photo = db.Column(db.LargeBinary)
+    name = db.Column(db.String(64))
+    parent_id_1 = db.Column(db.Integer)
+    parent_id_2 = db.Column(db.Integer)
+    description = db.Column(db.String(256))
+    image = db.Column(db.String(64)) # Разобраться как работает LargeBinary
+
     def __repr__(self):
-        return '<Name {}'.format(self.name)
+        return '<id: {}, user_id: {}, name: {}> {}'.format(self.id, self.user_id, self.name, self.parent_id_1)
 
 
 @login.user_loader

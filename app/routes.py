@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Human
 from werkzeug.urls import url_parse
 
 @app.route('/')
@@ -47,11 +47,22 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/tree')
+@login_required
 def tree():
-    data = [
-    { 'id': 15, 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
-    { 'id': 29, 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
-    { 'id': 529, 'parents': [29, 15], 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
-
-    ]
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    humans = db.session.query(Human).all();
+    data = []
+    for human in humans:
+        dat = {}
+        dat['parents'] = []
+        dat['id'] = human.id
+        dat['name'] = human.name
+        if human.parent_id_1:
+            dat['parents'].append(human.parent_id_1)
+        if human.parent_id_2:
+            dat['parents'].append(human.parent_id_2)
+        dat['description'] = human.description
+        dat['image'] = human.image
+        data.append(dat)
     return render_template('tree.html', data=data)
