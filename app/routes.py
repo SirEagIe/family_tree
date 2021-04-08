@@ -45,3 +45,13 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/tree')
+def tree():
+    data = [
+    { 'id': 15, 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
+    { 'id': 29, 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
+    { 'id': 529, 'parents': [29, 15], 'title': "Иванов Дмитрий Сергеевич ", 'description': "Р.Хакассия, П.Майна, 17.05.2015-17.05.2215", 'image': "photos/e.png"},
+
+    ]
+    return render_template('tree.html', data=data)

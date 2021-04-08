@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Resize Example</title>
+  <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.9.1.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.10.2.custom.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='primitives.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='primitives.latest.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+  <style>#draggable {cursor: help;}</style>
+  <script>$(function() {$( "#draggable" ).draggable();});</script>
+  <script type="text/javascript">
+    var famdata = [{% for d in data %}
+        {
+          'id': {{d.id}}, {% if d.parents %}'parents': {{ d.parents }}, {% endif %}'title': "{{d.title}}", 'description': "{{d.description}}", 'image': "{{d.image}}"
+        },
+    {% endfor %}
+    ];
+
+
+    jQuery(document).ready(function () {
+      var options = new primitives.orgdiagram.Config();
+      options.items = famdata;
+      options.cursorItem = null;
+      options.hasSelectorCheckbox = primitives.common.Enabled.False;
+      options.hasButtons = primitives.common.Enabled.False;
+      options.pageFitMode = primitives.common.PageFitMode.PrintPreview;
+      options.elbowType = primitives.common.ElbowType.Round;
+      options.normalLevelShift = 20;
+      options.dotLevelShift = 20;
+      options.lineLevelShift = 24;
+      options.normalItemsInterval = 10;
+      options.dotItemsInterval = 1;
+      options.lineItemsInterval = 1;
+      options.linesWidth = 1;
+      options.linesColor = "#7C8993";
+      jQuery("#diagram").famDiagram(options);
+      var placeholder = jQuery(".placeholder");
+      jQuery("#diagram").css({
+        width: placeholder.width() + 10,
+        height: placeholder.height() + 10,
+      })
+      jQuery("#diagram").famDiagram("update");
+    });
+  </script>
+</head>
+<body>
+  {{ data }}
+<div class="container">
+	<div id="draggable" class="ui-widget-content ui-draggable">
+    <div id="diagram" style="width:1000px; height:1000px"></div>
+	</div>
+	</div>
+</body>
+</html>
