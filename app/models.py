@@ -28,7 +28,8 @@ class Human(db.Model):
     image = db.Column(db.String(64)) # Разобраться как работает LargeBinary
 
     def __repr__(self):
-        return '<id: {}, user_id: {}, name: {}> {}'.format(self.id, self.user_id, self.name, self.parent_id_1)
+        return '<id: {}, user_id: {}, name: {}; p1: {}, p2: {}>'.format(self.id,
+                    self.user_id, self.name, self.parent_id_1, self.parent_id_2)
 
 
 @login.user_loader

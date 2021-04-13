@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -19,3 +19,11 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('This username is already taken')
+
+class AddToTreeForm(FlaskForm):
+    first_parent = RadioField('Lable', choices=[], default='0')
+    second_parent = RadioField('Lable', choices=[], default='0')
+    name = StringField('Name', validators=[DataRequired()])
+    description = StringField('Description')
+    image = StringField('Image')
+    submit = SubmitField('Submit')

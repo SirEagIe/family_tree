@@ -13,9 +13,14 @@
     <script>$(function() {$( "#draggable" ).draggable();});</script>
     -->
     <script type="text/javascript">
-      var famdata = [{% for d in data %}
+      var famdata = [
+      {% for d in data %}
           {
-            'id': {{d.id}}, {% if d.parents %}'parents': {{ d.parents }}, {% endif %}'title': "{{d.name}}", 'description': "{{d.description}}", 'image': "{{d.image}}"
+            'id': {{d.id}},
+            {% if d.parents %}'parents': {{ d.parents }},{% endif %}
+            'title': "{{d.name}}",
+            'description': "{{d.description}}",
+            'image': "{{d.image}}"
           },
       {% endfor %}
       ];
@@ -45,6 +50,26 @@
       });
     </script>
     {{ data }}
+    <div class="add-human-form" style="display: none; z-index: 2; background-color: #fff; width: 100px; height: 50%; position: relative; margin: 0 auto;">
+      Form will be here!
+    </div>
+    <div class="placeholder" style="width: 100%; height: 100vh; background-color: grey; position: fixed; z-index: 1; top: 0; left: 0; display: none;"></div>
+
+
+    <button class="add-human">Add</button>
+    <script type="text/javascript">
+      var button = document.querySelector(".add-human");
+      var placeholder = document.querySelector(".placeholder");
+      var addHumanForm = document.querySelector(".add-human-form");
+      button.onclick = function a() {
+        placeholder.style.display = "block";
+        addHumanForm.style.display = "block";
+      };
+      placeholder.onclick = function b() {
+        placeholder.style.display = "none";
+        addHumanForm.style.display = "none";
+      };
+    </script>
     <div class="container">
       <div id="draggable" class="ui-widget-content ui-draggable">
         <div id="diagram" style="width:1000px; height:1000px"></div>

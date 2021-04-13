@@ -9,6 +9,7 @@
   <body>
     <a href="{{ url_for('index') }}">Home</a>
     <a href="{{ url_for('tree') }}">Tree</a>
+    <a href="{{ url_for('add_to_tree') }}">Add to tree</a>
     {% if current_user.is_anonymous %}
     <a href="{{ url_for('login') }}">Sing in</a>
     <a href="{{ url_for('register') }}">Register</a>
