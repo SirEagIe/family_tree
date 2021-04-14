@@ -46,12 +46,30 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/tree')
+@app.route('/tree', methods=['GET', 'POST'])
 @login_required
 def tree():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-    humans = db.session.query(Human).filter(Human.user_id == current_user.id).all();
+    humans = db.session.query(Human).filter_by(user_id=current_user.id).all();
+    add_form = AddToTreeForm()
+    humans = db.session.query(Human).filter_by(user_id=current_user.id).all();
+    choices = [('0', 'Nobody')]
+    for human in humans:
+        choices.append((human.id, human.name))
+    add_form.first_parent.choices = choices
+    add_form.second_parent.choices = choices
+    if add_form.validate_on_submit():
+        user = User.query.filter_by(id=current_user.id).first()
+        human = Human(name = add_form.name.data,
+                      parent_id_1 = add_form.first_parent.data,
+                      parent_id_2 = add_form.second_parent.data,
+                      description = add_form.description.data,
+                      image = add_form.image.data,
+                      author = user)
+        db.session.add(human)
+        db.session.commit()
+        return redirect(url_for('tree'))
     data = []
     for human in humans:
         temp_data = {}
@@ -65,18 +83,4 @@ def tree():
         temp_data['description'] = human.description
         temp_data['image'] = human.image
         data.append(temp_data)
-    return render_template('tree.html', data=data)
-
-@app.route('/add_to_tree', methods=['GET', 'POST'])
-def add_to_tree():
-    form = AddToTreeForm()
-    humans = db.session.query(Human).filter(Human.user_id == current_user.id).all();
-    choices = [('0', 'Nobody')]
-    for human in humans:
-        choices.append((human.id, human.name))
-    form.first_parent.choices = choices
-    form.second_parent.choices = choices
-    if form.validate_on_submit():
-        flash(form.first_parent.data + ' ' + form.second_parent.data + ' ' + form.name.data)
-        return redirect(url_for('index'))
-    return render_template('add_to_tree.html', form=form)
+    return render_template('tree.html', data=data, add_form=add_form)

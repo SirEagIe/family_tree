@@ -19,7 +19,7 @@
             'id': {{d.id}},
             {% if d.parents %}'parents': {{ d.parents }},{% endif %}
             'title': "{{d.name}}",
-            'description': "{{d.description}}",
+            'description': "{{d.description}}" + " {{d.id}}",
             'image': "{{d.image}}"
           },
       {% endfor %}
@@ -50,11 +50,31 @@
       });
     </script>
     {{ data }}
-    <div class="add-human-form" style="display: none; z-index: 2; background-color: #fff; width: 100px; height: 50%; position: relative; margin: 0 auto;">
-      Form will be here!
+    <div class="add-human-form" style="text-align: center; width: 70%; white-space: nowrap; display: none; z-index: 2; background-color: #fff; position: fixed; left: 50%; transform: translate(-50%, 0);">
+      <form action="" method="post">
+        {{ add_form.hidden_tag() }}
+        <div class="" style="height: 200px; overflow: scroll; width: 50%; display: inline-block">
+          <input type="text" class="first-search" placeholder="Поиск имен..">
+          {{ add_form.first_parent(class_="fp") }}
+        </div>
+        <div class="" style="height: 200px; overflow: scroll; width: 50%; display: inline-block;">
+          <input type="text" class="second-search" placeholder="Поиск имен..">
+          {{ add_form.second_parent(class_="sp") }}
+        </div>
+        <br>
+        {{ add_form.name.label }}
+        {{ add_form.name }}
+        <br>
+        {{ add_form.description.label }}
+        {{ add_form.description }}
+        <br>
+        {{ add_form.image.label }}
+        {{ add_form.image }}
+        <br>
+        {{ add_form.submit() }}
+      </form>
     </div>
-    <div class="placeholder" style="width: 100%; height: 100vh; background-color: grey; position: fixed; z-index: 1; top: 0; left: 0; display: none;"></div>
-
+    <div class="placeholder" style="width: 100%; height: 100vh; background-color: rgba(100, 100, 100, 0.5); position: fixed; z-index: 1; top: 0; left: 0; display: none;"></div>
 
     <button class="add-human">Add</button>
     <script type="text/javascript">
@@ -69,6 +89,38 @@
         placeholder.style.display = "none";
         addHumanForm.style.display = "none";
       };
+    </script>
+    <script type="text/javascript">
+      var firstSearch = document.querySelector('.first-search');
+      var secondSearch = document.querySelector('.second-search');
+      firstSearch.onkeyup = function() {
+        var filter, ul, li, txtValue;
+        filter = firstSearch.value.toUpperCase();
+        ul = document.querySelector('.fp');
+        li = document.querySelectorAll('.fp li');
+        for (var i = 0; i < li.length; i++) {
+          txtValue = li[i].textContent;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
+      secondSearch.onkeyup = function() {
+        var filter, ul, li, txtValue;
+        filter = secondSearch.value.toUpperCase();
+        ul = document.querySelector('.sp');
+        li = document.querySelectorAll('.sp li');
+        for (var i = 0; i < li.length; i++) {
+          txtValue = li[i].textContent;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+          } else {
+            li[i].style.display = "none";
+          }
+        }
+      }
     </script>
     <div class="container">
       <div id="draggable" class="ui-widget-content ui-draggable">

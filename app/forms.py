@@ -21,8 +21,20 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('This username is already taken')
 
 class AddToTreeForm(FlaskForm):
-    first_parent = RadioField('Lable', choices=[], default='0')
-    second_parent = RadioField('Lable', choices=[], default='0')
+    first_parent = RadioField('First parent', choices=[], default='0')
+    second_parent = RadioField('Second parent', choices=[], default='0')
+    name = StringField('Name', validators=[DataRequired()])
+    description = StringField('Description')
+    image = StringField('Image')
+    submit = SubmitField('Submit')
+
+class RemoveFromTreeForm(FlaskForm):
+    human = RadioField('Remove', choices=[], default='0')
+    submit = SubmitField('Submit')
+
+class ChangeHumanInTreeForm(FlaskForm):
+    first_parent = RadioField('First parent', choices=[], default='0')
+    second_parent = RadioField('Second parent', choices=[], default='0')
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description')
     image = StringField('Image')
