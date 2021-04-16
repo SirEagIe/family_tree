@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, AddToTreeForm
+from app.forms import LoginForm, RegistrationForm, AddToTreeForm, RemoveFromTreeForm, ChangeHumanInTreeForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Human
 from werkzeug.urls import url_parse
@@ -53,12 +53,16 @@ def tree():
         return redirect(url_for('login'))
     humans = db.session.query(Human).filter_by(user_id=current_user.id).all();
     add_form = AddToTreeForm()
-    humans = db.session.query(Human).filter_by(user_id=current_user.id).all();
+    remove_form = RemoveFromTreeForm()
+    change_form = ChangeHumanInTreeForm()
     choices = [('0', 'Nobody')]
+    choices_without_nobody = [] # TODO: найти решение получше
     for human in humans:
         choices.append((human.id, human.name))
+        choices_without_nobody.append((human.id, human.name)) # TODO: найти решение получше
     add_form.first_parent.choices = choices
     add_form.second_parent.choices = choices
+    remove_form.id_human.choices = choices_without_nobody
     if add_form.validate_on_submit():
         user = User.query.filter_by(id=current_user.id).first()
         human = Human(name = add_form.name.data,
@@ -68,6 +72,13 @@ def tree():
                       image = add_form.image.data,
                       author = user)
         db.session.add(human)
+        db.session.commit()
+        return redirect(url_for('tree'))
+    if remove_form.validate_on_submit():
+        human = Human.query.filter_by(id=remove_form.id_human.data).first()
+        db.session.delete(human)
+        db.session.query(Human).filter_by(parent_id_1=remove_form.id_human.data).update({Human.parent_id_1: 0})
+        db.session.query(Human).filter_by(parent_id_2=remove_form.id_human.data).update({Human.parent_id_2: 0})
         db.session.commit()
         return redirect(url_for('tree'))
     data = []
@@ -83,4 +94,4 @@ def tree():
         temp_data['description'] = human.description
         temp_data['image'] = human.image
         data.append(temp_data)
-    return render_template('tree.html', data=data, add_form=add_form)
+    return render_template('tree.html', data=data, add_form=add_form, remove_form=remove_form)
