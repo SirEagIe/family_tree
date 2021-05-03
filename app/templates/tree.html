@@ -76,7 +76,7 @@
         {{ add_form.image.label }}
         {{ add_form.image }}
         <br>
-        {{ add_form.submit() }}
+        {{ add_form.add_submit() }}
       </form>
     </div>
     <!-- Форма для удаления -->
@@ -88,11 +88,42 @@
           {{ remove_form.humans(class_="rm") }}
         </div>
         <br>
-        {{ remove_form.submit() }}
+        {{ remove_form.remove_submit() }}
       </form>
     </div>
     <!-- Форма для изменения -->
-    <div class="change-human-form"></div>
+    <div class="form change-human-form">
+      <form action="" method="post">
+        {{ change_form.hidden_tag() }}
+        <div class="choose-human" style="display: block">
+          <input type="text" onkeyup="search('.choose-human')" placeholder="Поиск имен..">
+          {{ change_form.humans }}
+          <button type="button" class="choose-button">Next</button>
+        </div>
+
+        <div class="change-human" style="display: none; width: 100%">
+          <div class="change-parent change-first-parent">
+            <input type="text" onkeyup="search('.change-first-parent')" placeholder="Поиск имен..">
+            {{ change_form.first_parent }}
+          </div>
+          <div class="change-parent change-second-parent">
+            <input type="text" onkeyup="search('.change-second-parent')" placeholder="Поиск имен..">
+            {{ change_form.second_parent }}
+          </div>
+          <br>
+          {{ change_form.name.label }}
+          {{ change_form.name }}
+          <br>
+          {{ change_form.description.label }}
+          {{ change_form.description }}
+          <br>
+          {{ change_form.image.label }}
+          {{ change_form.image }}
+          <br>
+          {{ change_form.change_submit() }}
+        </div>
+      </form>
+    </div>
 
     <!-- Плейсхолдер -->
     <div class="button-placeholder"></div>

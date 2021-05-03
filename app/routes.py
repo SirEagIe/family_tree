@@ -4,7 +4,7 @@ from app.forms import LoginForm, RegistrationForm, AddToTreeForm, RemoveFromTree
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Human
 from werkzeug.urls import url_parse
-
+import sys
 @app.route('/')
 @app.route('/index')
 def index():
@@ -66,7 +66,8 @@ def tree():
     change_form.humans.choices = choices_without_nobody
     change_form.first_parent.choices = choices
     change_form.second_parent.choices = choices
-    if add_form.validate_on_submit():
+    change_form.humans.default = choices_without_nobody[0][0]
+    if add_form.add_submit.data and add_form.validate_on_submit():
         user = User.query.filter_by(id=current_user.id).first()
         human = Human(name = add_form.name.data,
                       parent_id_1 = add_form.first_parent.data,
@@ -77,13 +78,23 @@ def tree():
         db.session.add(human)
         db.session.commit()
         return redirect(url_for('tree'))
-    if remove_form.validate_on_submit():
+    if remove_form.remove_submit.data and remove_form.validate_on_submit():
         human = Human.query.filter_by(id=remove_form.humans.data).first()
         db.session.delete(human)
         db.session.query(Human).filter_by(parent_id_1=remove_form.humans.data).update({Human.parent_id_1: 0})
         db.session.query(Human).filter_by(parent_id_2=remove_form.humans.data).update({Human.parent_id_2: 0})
         db.session.commit()
         return redirect(url_for('tree'))
+    if change_form.change_submit.data and change_form.validate_on_submit():
+        db.session.query(Human).filter_by(id=change_form.humans.data).update(
+            {Human.name: change_form.name.data,
+            Human.parent_id_1: change_form.first_parent.data,
+            Human.parent_id_2: change_form.second_parent.data,
+            Human.description: change_form.description.data,
+            Human.image: change_form.image.data})
+        db.session.commit()
+        return redirect(url_for('tree'))
+    change_form.process()
     data = []
     for human in humans:
         temp_data = {}

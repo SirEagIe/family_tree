@@ -5,6 +5,9 @@ var placeholder = document.querySelector(".button-placeholder");
 var addForm = document.querySelector(".add-human-form");
 var removeForm = document.querySelector(".remove-human-form");
 var changeForm = document.querySelector(".change-human-form");
+var chooseButton = document.querySelector(".choose-button");
+var chooseHuman = document.querySelector(".choose-human");
+var changeHuman = document.querySelector(".change-human");
 addButton.onclick = function() {
   placeholder.style.display = "block";
   addForm.style.display = "block";
@@ -22,4 +25,10 @@ placeholder.onclick = function() {
   addForm.style.display = "none";
   removeForm.style.display = "none";
   changeForm.style.display = "none";
+  chooseHuman.style.display = "block";
+  changeHuman.style.display = "none";
+};
+chooseButton.onclick = function() {
+  chooseHuman.style.display = "none";
+  changeHuman.style.display = "block";
 };

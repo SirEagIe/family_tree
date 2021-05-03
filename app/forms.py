@@ -26,17 +26,17 @@ class AddToTreeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description')
     image = StringField('Image')
-    submit = SubmitField('Submit')
+    add_submit = SubmitField('Submit')
 
 class RemoveFromTreeForm(FlaskForm):
-    humans = RadioField('Remove', choices=[], default='0')
-    submit = SubmitField('Submit')
+    humans = RadioField('Remove', choices=[])
+    remove_submit = SubmitField('Submit')
 
 class ChangeInTreeForm(FlaskForm):
-    humans = RadioField('Change', choices=[], default='0')
+    humans = RadioField('Change', choices=[])
     first_parent = RadioField('First parent', choices=[], default='0')
     second_parent = RadioField('Second parent', choices=[], default='0')
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description')
     image = StringField('Image')
-    submit = SubmitField('Submit')
+    change_submit = SubmitField('Submit')
