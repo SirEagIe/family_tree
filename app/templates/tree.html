@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block head %}
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.9.1.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui-1.10.2.custom.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='primitives.min.js') }}"></script>
-    <link href="{{ url_for('static', filename='primitives.latest.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-1.10.2.custom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/primitives.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/primitives.latest.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='css/tree.css') }}" media="screen" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
 {% block content %}
@@ -12,6 +13,7 @@
     <style>#draggable {cursor: help;}</style>
     <script>$(function() {$( "#draggable" ).draggable();});</script>
     -->
+    <!-- Отображение дерева -->
     <script type="text/javascript">
       var famdata = [
       {% for d in data %}
@@ -49,16 +51,19 @@
         jQuery("#diagram").famDiagram("update");
       });
     </script>
+    <!-- Отладочная информация -->
     {{ data }}
-    <div class="add-human-form" style="text-align: center; width: 70%; white-space: nowrap; display: none; z-index: 2; background-color: #fff; position: fixed; left: 50%; transform: translate(-50%, 0);">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
+    <!-- Форма для добавления -->
+    <div class="form add-human-form">
       <form action="" method="post">
         {{ add_form.hidden_tag() }}
-        <div class="" style="height: 200px; overflow: scroll; width: 50%; display: inline-block">
-          <input type="text" class="first-search" placeholder="Поиск имен..">
+        <div class="add-parent add-first-parent">
+          <input type="text" onkeyup="search('.add-first-parent')" placeholder="Поиск имен..">
           {{ add_form.first_parent(class_="fp") }}
         </div>
-        <div class="" style="height: 200px; overflow: scroll; width: 50%; display: inline-block;">
-          <input type="text" class="second-search" placeholder="Поиск имен..">
+        <div class="add-parent add-second-parent">
+          <input type="text" onkeyup="search('.add-second-parent')" placeholder="Поиск имен..">
           {{ add_form.second_parent(class_="sp") }}
         </div>
         <br>
@@ -74,89 +79,30 @@
         {{ add_form.submit() }}
       </form>
     </div>
-    <div class="remove-human-form" style="text-align: center; width: 70%; white-space: nowrap; display: none; z-index: 2; background-color: #fff; position: fixed; left: 50%; transform: translate(-50%, 0);">
+    <!-- Форма для удаления -->
+    <div class="form remove-human-form">
       <form action="" method="post">
         {{ remove_form.hidden_tag() }}
-        <div class="" style="overflow: scroll; width: 50%; display: inline-block">
-          <input type="text" class="remove-search" placeholder="Поиск имен..">
-          {{ remove_form.id_human(class_="rm") }}
+        <div class="remove-human">
+          <input type="text" onkeyup="search('.remove-human')" placeholder="Поиск имен..">
+          {{ remove_form.humans(class_="rm") }}
         </div>
         <br>
         {{ remove_form.submit() }}
       </form>
     </div>
-    <div class="placeholder" style="width: 100%; height: 100vh; background-color: rgba(100, 100, 100, 0.5); position: fixed; z-index: 1; top: 0; left: 0; display: none;"></div>
+    <!-- Форма для изменения -->
+    <div class="change-human-form"></div>
 
-    <button class="add-human">Add</button>
-    <button class="remove-human">Remove</button>
+    <!-- Плейсхолдер -->
+    <div class="button-placeholder"></div>
 
-    <script type="text/javascript">
-      var add_button = document.querySelector(".add-human");
-      var remove_button = document.querySelector(".remove-human");
-      var placeholder = document.querySelector(".placeholder");
-      var addHumanForm = document.querySelector(".add-human-form");
-      var removeHumanForm = document.querySelector(".remove-human-form");
-      add_button.onclick = function() {
-        placeholder.style.display = "block";
-        addHumanForm.style.display = "block";
-      };
-      remove_button.onclick = function() {
-        placeholder.style.display = "block";
-        removeHumanForm.style.display = "block";
-      };
-      placeholder.onclick = function() {
-        placeholder.style.display = "none";
-        addHumanForm.style.display = "none";
-        removeHumanForm.style.display = "none";
-      };
-    </script>
-    <script type="text/javascript">
-      var firstSearch = document.querySelector('.first-search');
-      var secondSearch = document.querySelector('.second-search');
-      var removeSearch = document.querySelector('.remove-search');
-      firstSearch.onkeyup = function() {
-        var filter, ul, li, txtValue;
-        filter = firstSearch.value.toUpperCase();
-        ul = document.querySelector('.fp');
-        li = document.querySelectorAll('.fp li');
-        for (var i = 0; i < li.length; i++) {
-          txtValue = li[i].textContent;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-          } else {
-            li[i].style.display = "none";
-          }
-        }
-      }
-      secondSearch.onkeyup = function() {
-        var filter, ul, li, txtValue;
-        filter = secondSearch.value.toUpperCase();
-        ul = document.querySelector('.sp');
-        li = document.querySelectorAll('.sp li');
-        for (var i = 0; i < li.length; i++) {
-          txtValue = li[i].textContent;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-          } else {
-            li[i].style.display = "none";
-          }
-        }
-      }
-      removeSearch.onkeyup = function() {
-        var filter, ul, li, txtValue;
-        filter = removeSearch.value.toUpperCase();
-        ul = document.querySelector('.rm');
-        li = document.querySelectorAll('.rm li');
-        for (var i = 0; i < li.length; i++) {
-          txtValue = li[i].textContent;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-          } else {
-            li[i].style.display = "none";
-          }
-        }
-      }
-    </script>
+    <!-- Кнопки для добавления/удаления/изменения -->
+    <button class="add-button">Add</button>
+    <button class="remove-button">Remove</button>
+    <button class="change-button">Change</button>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/buttons.js') }}"></script>
+
     <div class="container">
       <div id="draggable" class="ui-widget-content ui-draggable">
         <div id="diagram" style="width:1000px; height:1000px"></div>

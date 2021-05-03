@@ -29,11 +29,11 @@ class AddToTreeForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class RemoveFromTreeForm(FlaskForm):
-    id_human = RadioField('Remove', choices=[], default='0')
+    humans = RadioField('Remove', choices=[], default='0')
     submit = SubmitField('Submit')
 
-class ChangeHumanInTreeForm(FlaskForm):
-    id_human = RadioField('Change', choices=[], default='0')
+class ChangeInTreeForm(FlaskForm):
+    humans = RadioField('Change', choices=[], default='0')
     first_parent = RadioField('First parent', choices=[], default='0')
     second_parent = RadioField('Second parent', choices=[], default='0')
     name = StringField('Name', validators=[DataRequired()])
