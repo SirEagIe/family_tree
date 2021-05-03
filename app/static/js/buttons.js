@@ -8,6 +8,30 @@ var changeForm = document.querySelector(".change-human-form");
 var chooseButton = document.querySelector(".choose-button");
 var chooseHuman = document.querySelector(".choose-human");
 var changeHuman = document.querySelector(".change-human");
+var addAlive = document.querySelector(".add-alive");
+var addDeath = document.querySelector(".add-death");
+var changeAlive = document.querySelector(".change-alive");
+var changeDeath = document.querySelector(".change-death");
+addAlive.checked = 1;
+changeAlive.checked = 1;
+addDeath.disabled = 1;
+changeDeath.disabled = 1;
+addAlive.onchange = function() {
+  if (addAlive.checked) {
+    addDeath.disabled = 1
+	}
+	else {
+		addDeath.disabled = 0
+	}
+};
+changeAlive.onchange = function() {
+  if (changeAlive.checked) {
+    changeDeath.disabled = 1
+	}
+	else {
+		changeDeath.disabled = 0
+	}
+};
 addButton.onclick = function() {
   placeholder.style.display = "block";
   addForm.style.display = "block";

@@ -21,7 +21,7 @@
             'id': {{d.id}},
             {% if d.parents %}'parents': {{ d.parents }},{% endif %}
             'title': "{{d.name}}",
-            'description': "{{d.description}}" + " {{d.id}}",
+            'description': "{{d.description}}",
             'image': "{{d.image}}"
           },
       {% endfor %}
@@ -70,6 +70,15 @@
         {{ add_form.name.label }}
         {{ add_form.name }}
         <br>
+        {{ add_form.is_alive.label }}
+        {{ add_form.is_alive(class_="add-alive") }}
+        <br>
+        {{ add_form.date_of_birthday.label }}
+        {{ add_form.date_of_birthday }}
+        <br>
+        {{ add_form.date_of_death.label }}
+        {{ add_form.date_of_death(class_="add-death") }}
+        <br>
         {{ add_form.description.label }}
         {{ add_form.description }}
         <br>
@@ -77,6 +86,9 @@
         {{ add_form.image }}
         <br>
         {{ add_form.add_submit() }}
+        {% for error in add_form.date_of_birthday.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
       </form>
     </div>
     <!-- Форма для удаления -->
@@ -113,6 +125,15 @@
           <br>
           {{ change_form.name.label }}
           {{ change_form.name }}
+          <br>
+          {{ change_form.is_alive.label }}
+          {{ change_form.is_alive(class_="change-alive") }}
+          <br>
+          {{ change_form.date_of_birthday.label }}
+          {{ change_form.date_of_birthday }}
+          <br>
+          {{ change_form.date_of_death.label }}
+          {{ change_form.date_of_death(class_="change-death") }}
           <br>
           {{ change_form.description.label }}
           {{ change_form.description }}

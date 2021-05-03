@@ -24,6 +24,9 @@ class Human(db.Model):
     name = db.Column(db.String(64))
     parent_id_1 = db.Column(db.Integer)
     parent_id_2 = db.Column(db.Integer)
+    is_alive = db.Column(db.Boolean)
+    date_of_birthday = db.Column(db.Date)
+    date_of_death = db.Column(db.Date)
     description = db.Column(db.String(256))
     image = db.Column(db.String(64)) # Разобраться как работает LargeBinary
 

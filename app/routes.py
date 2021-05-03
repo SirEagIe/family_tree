@@ -58,8 +58,8 @@ def tree():
     choices = [('0', 'Nobody')]
     choices_without_nobody = [] # TODO: найти решение получше
     for human in humans:
-        choices.append((human.id, human.name))
-        choices_without_nobody.append((human.id, human.name)) # TODO: найти решение получше
+        choices.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
+        choices_without_nobody.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
     add_form.first_parent.choices = choices
     add_form.second_parent.choices = choices
     remove_form.humans.choices = choices_without_nobody
@@ -72,9 +72,13 @@ def tree():
         human = Human(name = add_form.name.data,
                       parent_id_1 = add_form.first_parent.data,
                       parent_id_2 = add_form.second_parent.data,
+                      is_alive = add_form.is_alive.data,
+                      date_of_birthday = add_form.date_of_birthday.data,
                       description = add_form.description.data,
                       image = add_form.image.data,
                       author = user)
+        if not add_form.is_alive.data:
+            human.date_of_death = add_form.date_of_death.data
         db.session.add(human)
         db.session.commit()
         return redirect(url_for('tree'))
@@ -86,12 +90,18 @@ def tree():
         db.session.commit()
         return redirect(url_for('tree'))
     if change_form.change_submit.data and change_form.validate_on_submit():
-        db.session.query(Human).filter_by(id=change_form.humans.data).update(
-            {Human.name: change_form.name.data,
-            Human.parent_id_1: change_form.first_parent.data,
-            Human.parent_id_2: change_form.second_parent.data,
-            Human.description: change_form.description.data,
-            Human.image: change_form.image.data})
+        update_dict = {Human.name: change_form.name.data,
+                       Human.parent_id_1: change_form.first_parent.data,
+                       Human.parent_id_2: change_form.second_parent.data,
+                       Human.is_alive: change_form.is_alive.data,
+                       Human.date_of_birthday: change_form.date_of_birthday.data,
+                       Human.description: change_form.description.data,
+                       Human.image: change_form.image.data}
+        if change_form.is_alive.data:
+            update_dict[Human.date_of_death] = None
+        else:
+            update_dict[Human.date_of_death] = change_form.date_of_death.data
+        db.session.query(Human).filter_by(id=change_form.humans.data).update(update_dict)
         db.session.commit()
         return redirect(url_for('tree'))
     change_form.process()
@@ -105,7 +115,11 @@ def tree():
             temp_data['parents'].append(human.parent_id_1)
         if human.parent_id_2:
             temp_data['parents'].append(human.parent_id_2)
-        temp_data['description'] = human.description
+        temp_data['description'] = human.description + ' ' + str(human.date_of_birthday)
+        if not human.is_alive:
+            temp_data['description'] += ' - ' + str(human.date_of_death)
+        else:
+            temp_data['description'] += ' - ...'
         temp_data['image'] = human.image
         data.append(temp_data)
     return render_template('tree.html', data=data, add_form=add_form,
