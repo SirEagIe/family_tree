@@ -21,6 +21,9 @@
             'id': {{d.id}},
             {% if d.parents %}'parents': {{ d.parents }},{% endif %}
             'title': "{{d.name}}",
+            'is_alive': "{{d.is_alive}}",
+            'date_of_birthday': "{{d.date_of_birthday}}",
+            'date_of_death': "{{d.date_of_death}}",
             'description': "{{d.description}}",
             'image': "{{d.image}}"
           },
@@ -52,7 +55,7 @@
       });
     </script>
     <!-- Отладочная информация -->
-    {{ data }}
+    <!-- {{ data }} -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
     <!-- Форма для добавления -->
     <div class="form add-human-form">

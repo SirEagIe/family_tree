@@ -115,6 +115,9 @@ def tree():
             temp_data['parents'].append(human.parent_id_1)
         if human.parent_id_2:
             temp_data['parents'].append(human.parent_id_2)
+        temp_data['is_alive'] = human.is_alive
+        temp_data['date_of_birthday'] = human.date_of_birthday
+        temp_data['date_of_death'] = human.date_of_death
         temp_data['description'] = human.description + ' ' + str(human.date_of_birthday)
         if not human.is_alive:
             temp_data['description'] += ' - ' + str(human.date_of_death)

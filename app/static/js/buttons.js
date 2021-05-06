@@ -55,4 +55,41 @@ placeholder.onclick = function() {
 chooseButton.onclick = function() {
   chooseHuman.style.display = "none";
   changeHuman.style.display = "block";
-};
+  var humans = document.querySelectorAll(".choose-human input");
+  choosenHumanID = 0;
+  humans.forEach(human => {
+    if(human.checked)
+      choosenHumanID = human.value;
+  });
+  famdata.forEach(human => {
+    if(human.id == choosenHumanID) {
+      console.log(human);
+      if(human.parents != undefined) {
+        document.querySelectorAll(".change-human #first_parent input").forEach(item => {
+          if(item.value == human.parents[0])
+            item.checked = 1;
+        });
+        document.querySelectorAll(".change-human #second_parent input").forEach(item => {
+          if(item.value == human.parents[1])
+            item.checked = 1;
+        });
+      }
+      else {
+        document.querySelector(".change-human #first_parent input").checked = 1;
+        document.querySelector(".change-human #second_parent input").checked = 1;
+      }
+      document.querySelector(".change-human #name").value = human.title;
+      document.querySelector(".change-human #description").value = human.description;
+      document.querySelector(".change-human #date_of_birthday").value = human.date_of_birthday;
+      if(human.is_alive == 'True') {
+        changeAlive.checked = 1;
+        changeDeath.disabled = 1;
+      }
+      else {
+        changeAlive.checked = 0;
+        changeDeath.disabled = 0;
+        document.querySelector(".change-human #date_of_death").value = human.date_of_death;
+      }
+    }
+  });
+}
