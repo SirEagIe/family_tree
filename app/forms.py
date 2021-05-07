@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField
 from wtforms.fields.html5 import DateField
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
@@ -31,7 +32,7 @@ class AddToTreeForm(FlaskForm):
     date_of_birthday = DateField('Birthday')
     date_of_death = DateField('Death')
     description = StringField('Description')
-    image = StringField('Image')
+    image = FileField('image', validators=[FileAllowed(['jpg', 'png'])])
     add_submit = SubmitField('Submit')
 
 
@@ -49,5 +50,5 @@ class ChangeInTreeForm(FlaskForm):
     date_of_birthday = DateField('Birthday')
     date_of_death = DateField('Death')
     description = StringField('Description')
-    image = StringField('Image')
+    image = FileField('image', validators=[FileAllowed(['jpg', 'png'])])
     change_submit = SubmitField('Submit')

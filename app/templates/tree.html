@@ -55,11 +55,11 @@
       });
     </script>
     <!-- Отладочная информация -->
-    <!-- {{ data }} -->
+    {{ data }}
     <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
     <!-- Форма для добавления -->
     <div class="form add-human-form">
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
         {{ add_form.hidden_tag() }}
         <div class="add-parent add-first-parent">
           <input type="text" onkeyup="search('.add-first-parent')" placeholder="Поиск имен..">
@@ -89,7 +89,7 @@
         {{ add_form.image }}
         <br>
         {{ add_form.add_submit() }}
-        {% for error in add_form.date_of_birthday.errors %}
+        {% for error in add_form.image.errors %}
           <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
       </form>
@@ -108,7 +108,7 @@
     </div>
     <!-- Форма для изменения -->
     <div class="form change-human-form">
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
         {{ change_form.hidden_tag() }}
         <div class="choose-human" style="display: block">
           <input type="text" onkeyup="search('.choose-human')" placeholder="Поиск имен..">

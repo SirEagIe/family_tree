@@ -28,7 +28,7 @@ class Human(db.Model):
     date_of_birthday = db.Column(db.Date)
     date_of_death = db.Column(db.Date)
     description = db.Column(db.String(256))
-    image = db.Column(db.String(64)) # Разобраться как работает LargeBinary
+    image = db.Column(db.String(256))
 
     def __repr__(self):
         return '<id: {}, user_id: {}, name: {}; p1: {}, p2: {}>'.format(self.id,

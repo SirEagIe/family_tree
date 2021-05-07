@@ -4,7 +4,9 @@ from app.forms import LoginForm, RegistrationForm, AddToTreeForm, RemoveFromTree
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Human
 from werkzeug.urls import url_parse
-import sys
+from werkzeug.utils import secure_filename
+import sys, os
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -68,6 +70,12 @@ def tree():
     change_form.second_parent.choices = choices
     change_form.humans.default = choices_without_nobody[0][0]
     if add_form.add_submit.data and add_form.validate_on_submit():
+        if add_form.image.data:
+            filename = secure_filename(add_form.image.data.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            add_form.image.data.save(file_path)
+        else:
+            filename = 'default.jpg'
         user = User.query.filter_by(id=current_user.id).first()
         human = Human(name = add_form.name.data,
                       parent_id_1 = add_form.first_parent.data,
@@ -75,7 +83,7 @@ def tree():
                       is_alive = add_form.is_alive.data,
                       date_of_birthday = add_form.date_of_birthday.data,
                       description = add_form.description.data,
-                      image = add_form.image.data,
+                      image = os.path.join('static/images', filename),
                       author = user)
         if not add_form.is_alive.data:
             human.date_of_death = add_form.date_of_death.data
@@ -95,8 +103,13 @@ def tree():
                        Human.parent_id_2: change_form.second_parent.data,
                        Human.is_alive: change_form.is_alive.data,
                        Human.date_of_birthday: change_form.date_of_birthday.data,
-                       Human.description: change_form.description.data,
-                       Human.image: change_form.image.data}
+                       Human.description: change_form.description.data}
+        if change_form.image.data:
+            print(change_form.image.data, file=sys.stderr)
+            filename = secure_filename(change_form.image.data.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            change_form.image.data.save(file_path)
+            update_dict[Human.image] = os.path.join(app.config['IMAGES_FOLDER'], filename)
         if change_form.is_alive.data:
             update_dict[Human.date_of_death] = None
         else:
