@@ -22,14 +22,13 @@
 
 .bt-item-frame {
     border: 1px solid #dddddd;
-    background: #eeeeee url(images/ui-bg_highlight-soft_100_eeeeee_1x100.png) 50% top repeat-x;
     color: #333333;
 }
 
 .bp-title {
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
- text-align:  center;
+    text-align: center;
     font-size: 11px;
     line-height: 11px;
     color: white;
@@ -55,13 +54,11 @@
 
 .bp-cursor-frame {
     border: 2px solid #fbd850;
-    background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
     color: #eb8f00;
 }
 
 .bp-highlight-frame {
     border: 1px solid #fbcb09;
-    background: #fdf5ce url(images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x;
     color: #c77405;
 }
 
@@ -120,17 +117,17 @@
     font-weight:bold;
 }
 
-.bp-label-annotation 
+.bp-label-annotation
 {
-    font-size: 16px; 
+    font-size: 16px;
     text-align:center;
 }
 
 .bp-badge
 {
-    -moz-border-radius: 10px; 
-    -webkit-border-radius: 10px; 
-    -khtml-border-radius: 10px; 
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
     border-radius: 10px;
     font-size: 12px;
     line-height: 12px;
@@ -152,4 +149,8 @@
     border-bottom-style:dotted;
     border-right-color:#cccccc;
     border-bottom-color:#cccccc;
+}
+
+.ui-widget {
+  width: 100%;
 }

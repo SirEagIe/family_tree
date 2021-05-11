@@ -58,24 +58,23 @@ def tree():
     remove_form = RemoveFromTreeForm()
     change_form = ChangeInTreeForm()
     choices = [('0', 'Nobody')]
-    choices_without_nobody = [] # TODO: найти решение получше
     for human in humans:
         choices.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
-        choices_without_nobody.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
     add_form.first_parent.choices = choices
     add_form.second_parent.choices = choices
-    remove_form.humans.choices = choices_without_nobody
-    change_form.humans.choices = choices_without_nobody
+    remove_form.humans.choices = choices[1:]
+    change_form.humans.choices = choices[1:]
     change_form.first_parent.choices = choices
     change_form.second_parent.choices = choices
-    change_form.humans.default = choices_without_nobody[0][0]
+    if len(choices) > 1:
+        change_form.humans.default = choices[1][0]
     if add_form.add_submit.data and add_form.validate_on_submit():
         if add_form.image.data:
             filename = secure_filename(add_form.image.data.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             add_form.image.data.save(file_path)
         else:
-            filename = 'default.jpg'
+            filename = 'default.png'
         user = User.query.filter_by(id=current_user.id).first()
         human = Human(name = add_form.name.data,
                       parent_id_1 = add_form.first_parent.data,

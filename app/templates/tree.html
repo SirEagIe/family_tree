@@ -9,10 +9,6 @@
 {% endblock %}
 
 {% block content %}
-    <!--
-    <style>#draggable {cursor: help;}</style>
-    <script>$(function() {$( "#draggable" ).draggable();});</script>
-    -->
     <!-- Отображение дерева -->
     <script type="text/javascript">
       var famdata = [
@@ -35,7 +31,7 @@
         options.cursorItem = null;
         options.hasSelectorCheckbox = primitives.common.Enabled.False;
         options.hasButtons = primitives.common.Enabled.False;
-        options.pageFitMode = primitives.common.PageFitMode.PrintPreview;
+        options.pageFitMode = primitives.common.PageFitMode.None;
         options.elbowType = primitives.common.ElbowType.Round;
         options.normalLevelShift = 20;
         options.dotLevelShift = 20;
@@ -55,7 +51,7 @@
       });
     </script>
     <!-- Отладочная информация -->
-    {{ data }}
+    <!-- {{ data }} -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
     <!-- Форма для добавления -->
     <div class="form add-human-form">
@@ -158,9 +154,17 @@
     <button class="change-button">Change</button>
     <script type="text/javascript" src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 
-    <div class="container">
+    <div class="container" style="overflow: hidden; height: 70vh">
       <div id="draggable" class="ui-widget-content ui-draggable">
-        <div id="diagram" style="width:1000px; height:1000px"></div>
+        <div id="diagram"></div>
       </div>
     </div>
+
+    <script type="text/javascript">
+      document.ready = function() {
+        var items = document.querySelectorAll('[name="tree_item"]');
+        items.forEach(item => item.id = item.querySelector('[name="title"]').id);
+        $("#draggable").draggable();
+      };
+    </script>
 {% endblock %}
