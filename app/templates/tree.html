@@ -4,6 +4,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui-1.10.2.custom.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/primitives.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/modal_windows.js') }}"></script>
     <link href="{{ url_for('static', filename='css/primitives.latest.css') }}" media="screen" rel="stylesheet" type="text/css"/>
     <link href="{{ url_for('static', filename='css/tree.css') }}" media="screen" rel="stylesheet" type="text/css"/>
 {% endblock %}
@@ -73,10 +74,10 @@
         {{ add_form.is_alive(class_="add-alive") }}
         <br>
         {{ add_form.date_of_birthday.label }}
-        {{ add_form.date_of_birthday }}
+        {{ add_form.date_of_birthday(max="2100-12-31") }}
         <br>
         {{ add_form.date_of_death.label }}
-        {{ add_form.date_of_death(class_="add-death") }}
+        {{ add_form.date_of_death(class_="add-death", max="2100-12-31") }}
         <br>
         {{ add_form.description.label }}
         {{ add_form.description }}
@@ -129,10 +130,10 @@
           {{ change_form.is_alive(class_="change-alive") }}
           <br>
           {{ change_form.date_of_birthday.label }}
-          {{ change_form.date_of_birthday }}
+          {{ change_form.date_of_birthday(max="2100-12-31") }}
           <br>
           {{ change_form.date_of_death.label }}
-          {{ change_form.date_of_death(class_="change-death") }}
+          {{ change_form.date_of_death(class_="change-death", max="2100-12-31") }}
           <br>
           {{ change_form.description.label }}
           {{ change_form.description }}
@@ -146,25 +147,24 @@
     </div>
 
     <!-- Плейсхолдер -->
-    <div class="button-placeholder"></div>
+    <div class="placeholder-modal"></div>
 
     <!-- Кнопки для добавления/удаления/изменения -->
     <button class="add-button">Add</button>
     <button class="remove-button">Remove</button>
     <button class="change-button">Change</button>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 
+    {% for d in data %}
+        <div class="window-with-human" id="{{ d.id }}">
+          {{ d.name }}
+          <img src="{{ d.image }}" alt="{{ d.name }}" style="width: 50px; height: 50px;">
+          {{ d.description }}
+        </div>
+    {% endfor %}
     <div class="container" style="overflow: hidden; height: 70vh">
       <div id="draggable" class="ui-widget-content ui-draggable">
         <div id="diagram"></div>
       </div>
     </div>
-
-    <script type="text/javascript">
-      document.ready = function() {
-        var items = document.querySelectorAll('[name="tree_item"]');
-        items.forEach(item => item.id = item.querySelector('[name="title"]').id);
-        $("#draggable").draggable();
-      };
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/modal_windows.js') }}"></script>
 {% endblock %}

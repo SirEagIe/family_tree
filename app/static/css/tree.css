@@ -1,13 +1,16 @@
 .form {
   text-align: center;
   width: 70%;
+  height: 80vh;
   white-space: nowrap;
   display: none;
   z-index: 2;
   background-color: #fff;
   position: fixed;
   left: 50%;
-  transform: translate(-50%, 0);
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  overflow: scroll;
 }
 
 .add-parent {
@@ -30,7 +33,7 @@
   display: inline-block;
 }
 
-.button-placeholder {
+.placeholder-modal {
   width: 100%;
   height: 100vh;
   background-color: rgba(100, 100, 100, 0.5);
@@ -39,4 +42,50 @@
   top: 0;
   left: 0;
   display: none;
+}
+
+.window-with-human {
+  display: none;
+  width: 70%;
+  height: 80vh;
+  z-index: 2;
+  background-color: #fff;
+  position: fixed;
+  left: 50%;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  overflow: scroll;
+}
+
+.bp-item {
+  text-align: center;
+}
+
+.bp-title-frame {
+  position: static;
+  height: 20%;
+}
+
+.bp-title {
+  position: static;
+}
+
+.bp-photo-frame {
+  position: static;
+  width: 70%;
+  height: 70%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+}
+
+.bp-photo-frame img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.bp-description {
+  width: 100%;
+  font-size: 8px;
 }

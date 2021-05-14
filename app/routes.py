@@ -130,11 +130,7 @@ def tree():
         temp_data['is_alive'] = human.is_alive
         temp_data['date_of_birthday'] = human.date_of_birthday
         temp_data['date_of_death'] = human.date_of_death
-        temp_data['description'] = human.description + ' ' + str(human.date_of_birthday)
-        if not human.is_alive:
-            temp_data['description'] += ' - ' + str(human.date_of_death)
-        else:
-            temp_data['description'] += ' - ...'
+        temp_data['description'] = human.description
         temp_data['image'] = human.image
         data.append(temp_data)
     return render_template('tree.html', data=data, add_form=add_form,
