@@ -35,7 +35,7 @@ class AddToTreeForm(FlaskForm):
     date_of_birthday = DateField('Birthday')
     date_of_death = DateField('Death')
     description = TextAreaField('Description')
-    image = FileField('image', validators=[FileAllowed(['jpg', 'png'])])
+    image = FileField('image', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     add_submit = SubmitField('Submit')
 
     def addChoices(self, choices):

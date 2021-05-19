@@ -1,5 +1,9 @@
 document.ready = function() {
   $("#draggable").draggable();
+  document.querySelector('.transp-draggable').onclick = function() {
+    document.querySelector('#draggable').style.top = "50px";
+    document.querySelector('#draggable').style.left = "0";
+  }
   document.querySelector('#draggable').style.top = "50px";
   document.querySelector('.famdiagram').style.minWidth = "100%";
   document.querySelector('.famdiagram').style.minHeight = "100vh";

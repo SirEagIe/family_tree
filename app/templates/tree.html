@@ -13,7 +13,7 @@
 
 {% block content %}
     <script type="text/javascript">
-      document.querySelector("a.tree").classList.add("active");
+      document.querySelector(".tree").classList.add("active");
     </script>
     <!-- Отображение дерева -->
     <script type="text/javascript">
@@ -170,13 +170,24 @@
       <button class="add-button">Add</button>
       <button class="remove-button">Remove</button>
       <button class="change-button">Change</button>
+      <button class="transp-draggable">Tr Dr</button>
     </div>
 
     {% for d in data %}
         <div class="window-with-human" id="{{ d.id }}">
-          {{ d.name }}
-          <img src="{{ d.image }}" alt="{{ d.name }}" style="width: 50px; height: 50px;">
-          {{ d.description }}
+          <div class="name">
+            {{ d.name }}
+          </div>
+          <div class="dates">
+            {{ d.date_of_birthday }} -
+            {% if d.date_of_death %} {{ d.date_of_death }}
+            {% else %}...{% endif %}
+          </div>
+          <img class="image" src="{{ d.image }}" alt="{{ d.name }}">
+          <div class="description">
+            {% if d.description %} {{ d.description }}
+            {% else %}Описание отсутствует...{% endif %}
+          </div>
         </div>
     {% endfor %}
     <div class="container">

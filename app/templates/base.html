@@ -9,14 +9,24 @@
   </head>
   <body>
     <nav class="nav">
-      <a class="main" href="{{ url_for('index') }}">ГЛАВНАЯ</a>
-      <a class="tree" href="{{ url_for('tree') }}">ДЕРЕВО</a>
+      <a href="{{ url_for('index') }}">
+        <div class="nav-button main">ГЛАВНАЯ</div>
+      </a>
+      <a href="{{ url_for('tree') }}">
+        <div class="nav-button tree">ДЕРЕВО</div>
+      </a>
       <div class="nav-right">
         {% if current_user.is_anonymous %}
-        <a class="login" href="{{ url_for('login') }}">ВОЙТИ</a>
-        <a class="reg" href="{{ url_for('register') }}">РЕГИСТРАЦИЯ</a>
+        <a href="{{ url_for('login') }}">
+          <div class="nav-button login">ВОЙТИ</div>
+        </a>
+        <a href="{{ url_for('register') }}">
+          <div class="nav-button reg">РЕГИСТРАЦИЯ</div>
+        </a>
         {% else %}
-        <a href="{{ url_for('logout') }}">ВЫЙТИ</a>
+        <a href="{{ url_for('logout') }}">
+          <div class="nav-button">ВЫЙТИ</div>
+        </a>
         {% endif %}
       </div>
     </nav>
