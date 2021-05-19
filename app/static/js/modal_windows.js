@@ -1,5 +1,8 @@
 document.ready = function() {
   $("#draggable").draggable();
+  document.querySelector('#draggable').style.top = "50px";
+  document.querySelector('.famdiagram').style.minWidth = "100%";
+  document.querySelector('.famdiagram').style.minHeight = "100vh";
   var items = document.querySelectorAll('[name="tree_item"]');
   var humans = document.querySelectorAll(".window-with-human");
   var addButton = document.querySelector(".add-button");
@@ -17,9 +20,7 @@ document.ready = function() {
   var changeAlive = document.querySelector(".change-alive");
   var changeDeath = document.querySelector(".change-death");
   addAlive.checked = 1;
-  changeAlive.checked = 1;
   addDeath.disabled = 1;
-  changeDeath.disabled = 1;
   items.forEach(item => item.id = item.querySelector('[name="title"]').id);
   items.forEach(item => {
     item.onclick  = function() {
@@ -71,6 +72,8 @@ document.ready = function() {
     changeForm.style.display = "block";
   };
   chooseButton.onclick = function() {
+    changeAlive.checked = 1;
+    changeDeath.disabled = 1;
     chooseHuman.style.display = "none";
     changeHuman.style.display = "block";
     var humans = document.querySelectorAll(".choose-human input");

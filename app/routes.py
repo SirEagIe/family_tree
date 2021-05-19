@@ -4,7 +4,6 @@ from app.forms import LoginForm, RegistrationForm, AddToTreeForm, RemoveFromTree
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Human
 from werkzeug.urls import url_parse
-from werkzeug.utils import secure_filename
 import sys, os
 
 @app.route('/')
@@ -20,7 +19,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Неверный логин или пароль')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -39,7 +38,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        login_user(user)
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
@@ -60,61 +59,17 @@ def tree():
     choices = [('0', 'Nobody')]
     for human in humans:
         choices.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
-    add_form.first_parent.choices = choices
-    add_form.second_parent.choices = choices
-    remove_form.humans.choices = choices[1:]
-    change_form.humans.choices = choices[1:]
-    change_form.first_parent.choices = choices
-    change_form.second_parent.choices = choices
-    if len(choices) > 1:
-        change_form.humans.default = choices[1][0]
+    add_form.addChoices(choices)
+    remove_form.addChoices(choices)
+    change_form.addChoices(choices)
     if add_form.add_submit.data and add_form.validate_on_submit():
-        if add_form.image.data:
-            filename = secure_filename(add_form.image.data.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            add_form.image.data.save(file_path)
-        else:
-            filename = 'default.png'
-        user = User.query.filter_by(id=current_user.id).first()
-        human = Human(name = add_form.name.data,
-                      parent_id_1 = add_form.first_parent.data,
-                      parent_id_2 = add_form.second_parent.data,
-                      is_alive = add_form.is_alive.data,
-                      date_of_birthday = add_form.date_of_birthday.data,
-                      description = add_form.description.data,
-                      image = os.path.join('static/images', filename),
-                      author = user)
-        if not add_form.is_alive.data:
-            human.date_of_death = add_form.date_of_death.data
-        db.session.add(human)
-        db.session.commit()
+        add_form.addHumanInDb(db, current_user.id)
         return redirect(url_for('tree'))
     if remove_form.remove_submit.data and remove_form.validate_on_submit():
-        human = Human.query.filter_by(id=remove_form.humans.data).first()
-        db.session.delete(human)
-        db.session.query(Human).filter_by(parent_id_1=remove_form.humans.data).update({Human.parent_id_1: 0})
-        db.session.query(Human).filter_by(parent_id_2=remove_form.humans.data).update({Human.parent_id_2: 0})
-        db.session.commit()
+        remove_form.removeHumanFromDb(db)
         return redirect(url_for('tree'))
     if change_form.change_submit.data and change_form.validate_on_submit():
-        update_dict = {Human.name: change_form.name.data,
-                       Human.parent_id_1: change_form.first_parent.data,
-                       Human.parent_id_2: change_form.second_parent.data,
-                       Human.is_alive: change_form.is_alive.data,
-                       Human.date_of_birthday: change_form.date_of_birthday.data,
-                       Human.description: change_form.description.data}
-        if change_form.image.data:
-            print(change_form.image.data, file=sys.stderr)
-            filename = secure_filename(change_form.image.data.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            change_form.image.data.save(file_path)
-            update_dict[Human.image] = os.path.join(app.config['IMAGES_FOLDER'], filename)
-        if change_form.is_alive.data:
-            update_dict[Human.date_of_death] = None
-        else:
-            update_dict[Human.date_of_death] = change_form.date_of_death.data
-        db.session.query(Human).filter_by(id=change_form.humans.data).update(update_dict)
-        db.session.commit()
+        change_form.changeHumanInDb(db)
         return redirect(url_for('tree'))
     change_form.process()
     data = []

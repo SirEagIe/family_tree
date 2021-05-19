@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 
+{% block head %}
+    <link href="{{ url_for('static', filename='css/index.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block content %}
-{% if current_user.is_anonymous %}
-<h1>Hello, anon!</h1>
-{% else %}
-<h1>Hello, {{ current_user.username }}!</h1>
-{% endif %}
+<script type="text/javascript">
+  document.querySelector(".main").classList.add("active");
+</script>
+<div class="container">
+  <div class="text">
+    {% if current_user.is_anonymous %}
+    <h1>Добро пожаловать!</h1>
+    {% else %}
+    <h1>Добро пожаловать, {{ current_user.username }}!</h1>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

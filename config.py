@@ -6,5 +6,5 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = os.path.join(basedir, 'app/static/images')
-    IMAGES_FOLDER = 'static/images'
+    UPLOAD_FOLDER = os.path.join(basedir, 'app/static/photo')
+    PHOTO_FOLDER = 'static/photo'

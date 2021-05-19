@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background: url("../images/index-background.png");
+  background-size: cover;
+  text-align: center;
+}
+
+.container h1 {
+  margin: auto;
+}
+
+.text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -4,28 +4,22 @@
     <meta charset="utf-8">
     <title>Family tree</title>
     <link href="{{ url_for('static', filename='css/base.css') }}" media="screen" rel="stylesheet" type="text/css"/>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     {% block head %}{% endblock %}
   </head>
   <body>
-    <a href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('tree') }}">Tree</a>
-    {% if current_user.is_anonymous %}
-    <a href="{{ url_for('login') }}">Sing in</a>
-    <a href="{{ url_for('register') }}">Register</a>
-    {% else %}
-    <a href="{{ url_for('logout') }}">Logout</a>
-    {% endif %}
-    <hr>
-    {% with messages = get_flashed_messages() %}
-       {% if messages %}
-       <ul>
-           {% for message in messages %}
-           <li>{{ message }}</li>
-           {% endfor %}
-       </ul>
-       {% endif %}
-    {% endwith %}
+    <nav class="nav">
+      <a class="main" href="{{ url_for('index') }}">ГЛАВНАЯ</a>
+      <a class="tree" href="{{ url_for('tree') }}">ДЕРЕВО</a>
+      <div class="nav-right">
+        {% if current_user.is_anonymous %}
+        <a class="login" href="{{ url_for('login') }}">ВОЙТИ</a>
+        <a class="reg" href="{{ url_for('register') }}">РЕГИСТРАЦИЯ</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">ВЫЙТИ</a>
+        {% endif %}
+      </div>
+    </nav>
     {% block content %}{% endblock %}
   </body>
 </html>

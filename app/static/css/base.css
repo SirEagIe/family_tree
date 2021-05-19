@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+}
+
+.nav {
+  z-index: 999;
+  background-color: #723A23;
+  height: 50px;
+  width: 100%;
+  position: fixed;
+}
+
+.nav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 13px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.nav a:hover {
+  background-color: #8D4D2A;
+}
+
+.nav-right {
+  float: right;
+}
+
+.active {
+  background-color: #3F3D3D;
+}

@@ -7,9 +7,14 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/modal_windows.js') }}"></script>
     <link href="{{ url_for('static', filename='css/primitives.latest.css') }}" media="screen" rel="stylesheet" type="text/css"/>
     <link href="{{ url_for('static', filename='css/tree.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/modal_windows.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
 {% endblock %}
 
 {% block content %}
+    <script type="text/javascript">
+      document.querySelector("a.tree").classList.add("active");
+    </script>
     <!-- Отображение дерева -->
     <script type="text/javascript">
       var famdata = [
@@ -21,7 +26,7 @@
             'is_alive': "{{d.is_alive}}",
             'date_of_birthday': "{{d.date_of_birthday}}",
             'date_of_death': "{{d.date_of_death}}",
-            'description': "{{d.description}}",
+            'description': `{{d.description}}`,
             'image': "{{d.image}}"
           },
       {% endfor %}
@@ -53,7 +58,6 @@
     </script>
     <!-- Отладочная информация -->
     <!-- {{ data }} -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js') }}"></script>
     <!-- Форма для добавления -->
     <div class="form add-human-form">
       <form action="" method="post" enctype="multipart/form-data">
@@ -102,6 +106,12 @@
         <br>
         {{ remove_form.remove_submit() }}
       </form>
+      {% if not remove_form.humans.choices %}
+      <script type="text/javascript">
+        document.querySelector(".remove-human-form form").style.display = "none";
+      </script>
+      <span>Удалять некого</span>
+      {% endif %}
     </div>
     <!-- Форма для изменения -->
     <div class="form change-human-form">
@@ -144,15 +154,23 @@
           {{ change_form.change_submit() }}
         </div>
       </form>
+      {% if not change_form.humans.choices %}
+      <script type="text/javascript">
+        document.querySelector(".change-human-form form").style.display = "none";
+      </script>
+      <span>Изменять некого</span>
+      {% endif %}
     </div>
 
     <!-- Плейсхолдер -->
     <div class="placeholder-modal"></div>
 
     <!-- Кнопки для добавления/удаления/изменения -->
-    <button class="add-button">Add</button>
-    <button class="remove-button">Remove</button>
-    <button class="change-button">Change</button>
+    <div class="buttons">
+      <button class="add-button">Add</button>
+      <button class="remove-button">Remove</button>
+      <button class="change-button">Change</button>
+    </div>
 
     {% for d in data %}
         <div class="window-with-human" id="{{ d.id }}">
@@ -161,10 +179,9 @@
           {{ d.description }}
         </div>
     {% endfor %}
-    <div class="container" style="overflow: hidden; height: 70vh">
+    <div class="container">
       <div id="draggable" class="ui-widget-content ui-draggable">
         <div id="diagram"></div>
       </div>
     </div>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/modal_windows.js') }}"></script>
 {% endblock %}
