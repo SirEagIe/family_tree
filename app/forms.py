@@ -6,7 +6,22 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from werkzeug.utils import secure_filename
 from app.models import User, Human
-import os
+import os, sys
+
+def recursion_check(db, id, parents_id):
+    if id in parents_id:
+        return False
+    if len(parents_id) == 0:
+        return True
+    parents_id_tmp = []
+    for parent_id in parents_id:
+        parent = db.session.query(Human).filter_by(id=parent_id).first()
+        if parent.parent_id_1:
+            parents_id_tmp.append(parent.parent_id_1)
+        if parent.parent_id_2:
+            parents_id_tmp.append(parent.parent_id_2)
+    return recursion_check(db, id, parents_id_tmp)
+
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -62,7 +77,14 @@ class AddToTreeForm(FlaskForm):
             human.date_of_death = self.date_of_death.data
         db.session.add(human)
         db.session.commit()
-
+        parents = []
+        if int(human.parent_id_1):
+            parents.append(human.parent_id_1)
+        if int(human.parent_id_2):
+            parents.append(human.parent_id_2)
+        if not recursion_check(db, human.id, parents):
+            db.session.delete(human)
+            db.session.commit()
 
 class RemoveFromTreeForm(FlaskForm):
     humans = RadioField('Remove', choices=[])
@@ -99,6 +121,13 @@ class ChangeInTreeForm(FlaskForm):
             self.humans.default = choices[1][0]
 
     def changeHumanInDb(self, db):
+        parents = []
+        if int(self.first_parent.data):
+            parents.append(int(self.first_parent.data))
+        if int(self.second_parent.data):
+            parents.append(int(self.second_parent.data))
+        if not recursion_check(db, int(self.humans.data), parents):
+            return
         update_dict = {Human.name: self.name.data,
                        Human.parent_id_1: self.first_parent.data,
                        Human.parent_id_2: self.second_parent.data,
