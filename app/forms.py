@@ -24,22 +24,22 @@ def recursion_check(db, id, parents_id):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    username = StringField('Имя пользователя', validators=[DataRequired(message='Это поле должно быть заполнено')])
+    password = PasswordField('Пароль', validators=[DataRequired(message='Это поле должно быть заполнено')])
+    remember_me = BooleanField('Запомнить меня')
+    submit = SubmitField('Войти')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password_repeat = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+    username = StringField('Имя пользователя', validators=[DataRequired(message='Это поле должно быть заполнено')])
+    password = PasswordField('Пароль', validators=[DataRequired(message='Это поле должно быть заполнено')])
+    password_repeat = PasswordField('Повторите пароль', validators=[DataRequired(message='Это поле должно быть заполнено'), EqualTo('password', message='Пароли не совпадают')])
+    submit = SubmitField('Зарегистрироваться')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('This username is already taken')
+            raise ValidationError('Данное имя уже занято')
 
 
 class AddToTreeForm(FlaskForm):
@@ -85,6 +85,8 @@ class AddToTreeForm(FlaskForm):
         if not recursion_check(db, human.id, parents):
             db.session.delete(human)
             db.session.commit()
+            # ???
+            self.errors.add_submit.append('Невозможно отобразить данные')
 
 class RemoveFromTreeForm(FlaskForm):
     humans = RadioField('Remove', choices=[])
@@ -110,7 +112,7 @@ class ChangeInTreeForm(FlaskForm):
     date_of_birthday = DateField('Birthday')
     date_of_death = DateField('Death')
     description = TextAreaField('Description')
-    image = FileField('image', validators=[FileAllowed(['jpg', 'png'])])
+    image = FileField('image', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     change_submit = SubmitField('Submit')
 
     def addChoices(self, choices):
@@ -127,6 +129,8 @@ class ChangeInTreeForm(FlaskForm):
         if int(self.second_parent.data):
             parents.append(int(self.second_parent.data))
         if not recursion_check(db, int(self.humans.data), parents):
+            # ???
+            self.change_submit.errors.append('Невозможно отобразить данные')
             return
         update_dict = {Human.name: self.name.data,
                        Human.parent_id_1: self.first_parent.data,

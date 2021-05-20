@@ -1,5 +1,10 @@
 * {
   margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #F2F1F0;
 }
 
 .nav {
@@ -16,6 +21,7 @@
   color: #f2f2f2;
   text-decoration: none;
   font-size: 17px;
+  font-weight: 700;
   display: inline-block;
   text-align: center;
   height: 100%;

@@ -9,36 +9,38 @@
   document.querySelector(".login").classList.add("active");
 </script>
 <h1>Sign In</h1>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.username.label }}<br>
-    {{ form.username(size=32) }}<br>
-    {% for error in form.username.errors %}
-      <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.password.label }}<br>
-    {{ form.password(size=32) }}<br>
-    {% for error in form.password.errors %}
-      <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-    <span calss="error">{{ message }}</span>
-    {% endfor %}
-  {% endif %}
-  {% endwith %}
-  <p>
-    {{ form.remember_me() }}
-    {{ form.remember_me.label }}
-  </p>
-  <p><a href="{{ url_for('register') }}">Не зарегистрированы?</a></p>
-  <p>
-    {{ form.submit() }}
-  </p>
-</form>
+<div class="login-form">
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.username.label }}<br>
+      {{ form.username(size=32) }}<br>
+      {% for error in form.username.errors %}
+        <span class="error" style="color: red;">{{ error }}</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ form.password.label }}<br>
+      {{ form.password(size=32) }}<br>
+      {% for error in form.password.errors %}
+        <span class="error" style="color: red;">{{ error }}</span>
+      {% endfor %}
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <span class="error">{{ message }}</span>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </p>
+    <p>
+      {{ form.remember_me() }}
+      {{ form.remember_me.label }}
+    </p>
+    <p class="not_reg"><a href="{{ url_for('register') }}">Не зарегистрированы?</a></p>
+    <p>
+      {{ form.submit() }}
+    </p>
+  </form>
+</div>
 {% endblock %}

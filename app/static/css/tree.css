@@ -2,10 +2,6 @@ textarea {
   resize: none;
 }
 
-body {
-  background-color: #F2F1F0;
-}
-
 .container {
   overflow: hidden;
   height: calc(100vh - 50px);
@@ -140,12 +136,13 @@ body {
 }
 
 .window-with-human .description {
-    white-space: normal;
-    text-align: justify;
-    background-color: #F2F1F0;
-    width: 80%;
-    font-size: 15px;
-    height: 150px;
-    margin: 15px auto;
-    overflow: scroll;
+  padding: 5px;
+  white-space: normal;
+  text-align: justify;
+  background-color: #F2F1F0;
+  width: 80%;
+  font-size: 15px;
+  height: 150px;
+  margin: 15px auto;
+  overflow: scroll;
 }

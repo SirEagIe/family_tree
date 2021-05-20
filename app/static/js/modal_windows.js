@@ -3,7 +3,10 @@ document.ready = function() {
   document.querySelector('.transp-draggable').onclick = function() {
     document.querySelector('#draggable').style.top = "50px";
     document.querySelector('#draggable').style.left = "0";
-  }
+  };
+  document.querySelectorAll('[name="titleBackground"]').forEach(title => {
+    title.style.background = "#084006";
+  });
   document.querySelector('#draggable').style.top = "50px";
   document.querySelector('.famdiagram').style.minWidth = "100%";
   document.querySelector('.famdiagram').style.minHeight = "100vh";

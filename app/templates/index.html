@@ -9,12 +9,13 @@
   document.querySelector(".main").classList.add("active");
 </script>
 <div class="container">
-  <div class="text">
+  <div class="welcome-text">
     {% if current_user.is_anonymous %}
     <h1>Добро пожаловать!</h1>
     {% else %}
     <h1>Добро пожаловать, {{ current_user.username }}!</h1>
     {% endif %}
+    Вы находитесь на сайте, который позволяет систематизировать и удобно хранить данные о людях в виде генеалогических деревьев. Для начала работы войдите в свою учётная запись или зарегистрируйтесь, если этого ещё не сделали!
   </div>
 </div>
 {% endblock %}

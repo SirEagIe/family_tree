@@ -1,0 +1,22 @@
+.login-form {
+  width: 40%;
+  position: absolute;
+  left: 50%;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  text-align: center;
+  max-height: 100vh;
+}
+
+.not_reg {
+  margin-bottom: 15px;
+}
+
+.login-form p {
+  margin-bottom: 15px;
+}
+
+.error {
+  color: red;
+}

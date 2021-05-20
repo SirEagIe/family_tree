@@ -7,12 +7,20 @@
 }
 
 .container h1 {
+  font-weight: 700;
   margin: auto;
+  font-size: 25px;
 }
 
-.text {
+.welcome-text {
+  padding: 30px;
+  font-size: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 40%;
+  max-height: 100vh;
   transform: translate(-50%, -50%);
+  background-color: rgba(114, 58, 35, 0.8);
+  color: #FFF;
 }
