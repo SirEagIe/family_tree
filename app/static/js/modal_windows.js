@@ -47,7 +47,8 @@ document.ready = function() {
     addForm.style.display = "none";
     removeForm.style.display = "none";
     changeForm.style.display = "none";
-    chooseHuman.style.display = "block";
+    chooseHuman.style.display = "inline-block";
+    chooseButton.style.display = "inline-block";
     changeHuman.style.display = "none";
   };
   addAlive.onchange = function() {
@@ -82,6 +83,7 @@ document.ready = function() {
     changeAlive.checked = 1;
     changeDeath.disabled = 1;
     chooseHuman.style.display = "none";
+    chooseButton.style.display = "none";
     changeHuman.style.display = "block";
     var humans = document.querySelectorAll(".choose-human input");
     choosenHumanID = 0;
@@ -93,18 +95,18 @@ document.ready = function() {
       if(human.id == choosenHumanID) {
         console.log(human);
         if(human.parents != undefined) {
-          document.querySelectorAll(".change-human #first_parent input").forEach(item => {
+          document.querySelectorAll(".change-human .change-first-parent input").forEach(item => {
             if(item.value == human.parents[0])
               item.checked = 1;
           });
-          document.querySelectorAll(".change-human #second_parent input").forEach(item => {
+          document.querySelectorAll(".change-human .change-second-parent input").forEach(item => {
             if(item.value == human.parents[1])
               item.checked = 1;
           });
         }
         else {
-          document.querySelector(".change-human #first_parent input").checked = 1;
-          document.querySelector(".change-human #second_parent input").checked = 1;
+          document.querySelector(".change-human .change-first-parent input").checked = 1;
+          document.querySelector(".change-human .change-second-parent input").checked = 1;
         }
         document.querySelector(".change-human #name").value = human.title;
         document.querySelector(".change-human #description").value = human.description;

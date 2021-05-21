@@ -2,6 +2,14 @@ textarea {
   resize: none;
 }
 
+li {
+  list-style-type: none;
+}
+
+ul {
+  padding: 0;
+}
+
 .container {
   overflow: hidden;
   height: calc(100vh - 50px);
@@ -20,16 +28,18 @@ textarea {
 .form {
   text-align: center;
   width: 70%;
-  height: 80vh;
+  max-height: 100vh;
   white-space: nowrap;
   display: none;
-  z-index: 2;
+  z-index: 99;
   background-color: #fff;
   position: fixed;
   left: 50%;
   top: 50vh;
   transform: translate(-50%, -50%);
   overflow: scroll;
+  background-color: #D8BEA3;
+  padding: 20px;
 }
 
 .add-parent {
@@ -41,14 +51,24 @@ textarea {
 
 .remove-human {
   overflow: scroll;
-  width: 50%;
+  width: 70%;
   display: inline-block;
+}
+
+.choose-human {
+  display: inline-block;
+  overflow: scroll;
+  width: 70%;
+}
+
+.change-human {
+  display: none; width: 100%
 }
 
 .change-parent {
   height: 200px;
   overflow: scroll;
-  width: 50%;
+  width: calc(50% - 2px);
   display: inline-block;
 }
 
@@ -124,6 +144,7 @@ textarea {
   margin: 5px 0 0 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: text;
 }
 
 .window-with-human .dates {
@@ -145,4 +166,57 @@ textarea {
   height: 150px;
   margin: 15px auto;
   overflow: scroll;
+  user-select: text;
+}
+
+.button {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  padding: 0 15px;
+  line-height: 50px;
+}
+
+.button:hover {
+  background-color: #8D4D2A;
+  cursor: pointer;
+}
+
+.human-list {
+  background-color: #F2F1F0;
+  padding: 5px;
+}
+
+.form li {
+  margin: 10px 0;
+}
+
+input[type=radio] {
+  display: none;
+}
+
+input[type=radio] + label {
+  cursor: pointer;
+  border: 1px solid #8D4D2A;
+  border-radius: 6px;
+  padding: 3px;
+  display: block;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+input[type=radio] + label:hover::after {
+  content: normal;
+}
+
+input[type=radio]:checked + label {
+	background: rgba(114, 58, 35, 0.7);
+}
+
+.form p input, textarea {
+  margin-top: 10px;
 }

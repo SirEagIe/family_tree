@@ -27,7 +27,7 @@ class Human(db.Model):
     is_alive = db.Column(db.Boolean)
     date_of_birthday = db.Column(db.Date)
     date_of_death = db.Column(db.Date)
-    description = db.Column(db.String(256))
+    description = db.Column(db.String(512))
     image = db.Column(db.String(256))
 
     def __repr__(self):

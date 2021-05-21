@@ -62,103 +62,113 @@
     <div class="form add-human-form">
       <form action="" method="post" enctype="multipart/form-data">
         {{ add_form.hidden_tag() }}
-        <div class="add-parent add-first-parent">
+        <div class="human-list add-parent add-first-parent">
           <input type="text" onkeyup="search('.add-first-parent')" placeholder="Поиск имен..">
-          {{ add_form.first_parent(class_="fp") }}
+          {{ add_form.add_first_parent(class_="fp") }}
         </div>
-        <div class="add-parent add-second-parent">
+        <div class="human-list add-parent add-second-parent">
           <input type="text" onkeyup="search('.add-second-parent')" placeholder="Поиск имен..">
-          {{ add_form.second_parent(class_="sp") }}
+          {{ add_form.add_second_parent(class_="sp") }}
         </div>
-        <br>
-        {{ add_form.name.label }}
-        {{ add_form.name }}
-        <br>
+        <p>
+        {{ add_form.name(placeholder="Имя") }}
+        </p>
+        <p>
         {{ add_form.is_alive.label }}
         {{ add_form.is_alive(class_="add-alive") }}
-        <br>
+        </p>
+        <p>
         {{ add_form.date_of_birthday.label }}
         {{ add_form.date_of_birthday(max="2100-12-31") }}
-        <br>
+        </p>
+        <p>
         {{ add_form.date_of_death.label }}
         {{ add_form.date_of_death(class_="add-death", max="2100-12-31") }}
-        <br>
-        {{ add_form.description.label }}
-        {{ add_form.description }}
-        <br>
+        </p>
+        <p>
+        {{ add_form.description(placeholder="Описание") }}
+        </p>
+        <p>
         {{ add_form.image.label }}
         {{ add_form.image }}
-        <br>
+        </p>
+        <p>
         {{ add_form.add_submit() }}
         {% for error in add_form.image.errors %}
           <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
+        </p>
       </form>
     </div>
     <!-- Форма для удаления -->
     <div class="form remove-human-form">
       <form action="" method="post">
         {{ remove_form.hidden_tag() }}
-        <div class="remove-human">
+        <div class="human-list remove-human">
           <input type="text" onkeyup="search('.remove-human')" placeholder="Поиск имен..">
-          {{ remove_form.humans(class_="rm") }}
+          {{ remove_form.remove_humans_list(class_="rm") }}
         </div>
         <br>
         {{ remove_form.remove_submit() }}
       </form>
-      {% if not remove_form.humans.choices %}
+      {% if not remove_form.remove_humans_list.choices %}
       <script type="text/javascript">
         document.querySelector(".remove-human-form form").style.display = "none";
       </script>
-      <span>Удалять некого</span>
+      <span style="color: red; font-size: 20px;">Удалять некого</span>
       {% endif %}
     </div>
     <!-- Форма для изменения -->
     <div class="form change-human-form">
       <form action="" method="post" enctype="multipart/form-data">
         {{ change_form.hidden_tag() }}
-        <div class="choose-human" style="display: block">
+        <div class="human-list choose-human">
           <input type="text" onkeyup="search('.choose-human')" placeholder="Поиск имен..">
-          {{ change_form.humans }}
-          <button type="button" class="choose-button">Next</button>
+          {{ change_form.change_humans_list(class_="chng") }}
         </div>
-
-        <div class="change-human" style="display: none; width: 100%">
-          <div class="change-parent change-first-parent">
+        <br>
+        <button type="button" class="choose-button">Далее</button>
+        <div class="change-human">
+          <div class="human-list change-parent change-first-parent">
             <input type="text" onkeyup="search('.change-first-parent')" placeholder="Поиск имен..">
-            {{ change_form.first_parent }}
+            {{ change_form.change_first_parent(class_="fp") }}
           </div>
-          <div class="change-parent change-second-parent">
+          <div class="human-list change-parent change-second-parent">
             <input type="text" onkeyup="search('.change-second-parent')" placeholder="Поиск имен..">
-            {{ change_form.second_parent }}
+            {{ change_form.change_second_parent(class_="sp") }}
           </div>
-          <br>
-          {{ change_form.name.label }}
-          {{ change_form.name }}
-          <br>
+          <p>
+          {{ change_form.name(placeholder="Имя") }}
+          </p>
+          <p>
           {{ change_form.is_alive.label }}
           {{ change_form.is_alive(class_="change-alive") }}
-          <br>
+          </p>
+          <p>
           {{ change_form.date_of_birthday.label }}
           {{ change_form.date_of_birthday(max="2100-12-31") }}
-          <br>
+          </p>
+          <p>
           {{ change_form.date_of_death.label }}
           {{ change_form.date_of_death(class_="change-death", max="2100-12-31") }}
-          <br>
-          {{ change_form.description.label }}
-          {{ change_form.description }}
-          <br>
+          </p>
+          <p>
+          {{ change_form.description(placeholder="Описание") }}
+          </p>
+          <p>
           {{ change_form.image.label }}
           {{ change_form.image }}
-          <br>
+          </p>
+          <p>
           {{ change_form.change_submit() }}
+          </p>
         </div>
       </form>
-      {% if not change_form.humans.choices %}
+      {% if not change_form.change_humans_list.choices %}
       <script type="text/javascript">
         document.querySelector(".change-human-form form").style.display = "none";
       </script>
-      <span>Изменять некого</span>
+      <span style="color: red; font-size: 20px;">Изменять некого</span>
       {% endif %}
     </div>
 
@@ -167,10 +177,10 @@
 
     <!-- Кнопки для добавления/удаления/изменения -->
     <div class="buttons">
-      <button class="add-button">Add</button>
-      <button class="remove-button">Remove</button>
-      <button class="change-button">Change</button>
-      <button class="transp-draggable">Tr Dr</button>
+      <div class="button add-button">Добавить</div>
+      <div class="button remove-button">Удалить</div>
+      <div class="button change-button">Изменить</div>
+      <div class="button transp-draggable">В центр</div>
     </div>
 
     {% for d in data %}

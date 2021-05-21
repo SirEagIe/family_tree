@@ -56,7 +56,7 @@ def tree():
     add_form = AddToTreeForm()
     remove_form = RemoveFromTreeForm()
     change_form = ChangeInTreeForm()
-    choices = [('0', 'Nobody')]
+    choices = [('0', 'Никто')]
     for human in humans:
         choices.append((human.id, human.name+' (' + str(human.date_of_birthday) + ')'))
     add_form.addChoices(choices)

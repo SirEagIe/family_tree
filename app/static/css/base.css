@@ -1,6 +1,11 @@
 * {
   margin: 0;
   font-family: 'Roboto', sans-serif;
+  user-select: none;
+}
+
+input, textarea {
+  user-select: text;
 }
 
 body {

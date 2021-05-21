@@ -43,19 +43,19 @@ class RegistrationForm(FlaskForm):
 
 
 class AddToTreeForm(FlaskForm):
-    first_parent = RadioField('First parent', choices=[], default='0')
-    second_parent = RadioField('Second parent', choices=[], default='0')
-    name = StringField('Name', validators=[DataRequired()])
-    is_alive = BooleanField('Alive')
-    date_of_birthday = DateField('Birthday')
-    date_of_death = DateField('Death')
-    description = TextAreaField('Description')
-    image = FileField('image', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    add_submit = SubmitField('Submit')
+    add_first_parent = RadioField('Первый родитель', choices=[], default='0')
+    add_second_parent = RadioField('Второй родитель', choices=[], default='0')
+    name = StringField('Имя', validators=[DataRequired('Это поле должно быть заполнено')])
+    is_alive = BooleanField('Жив')
+    date_of_birthday = DateField('Дата рождения', validators=[DataRequired()])
+    date_of_death = DateField('Дата смерти')
+    description = TextAreaField('Описание')
+    image = FileField('Фото', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    add_submit = SubmitField('Добавить')
 
     def addChoices(self, choices):
-        self.first_parent.choices = choices
-        self.second_parent.choices = choices
+        self.add_first_parent.choices = choices
+        self.add_second_parent.choices = choices
 
     def addHumanInDb(self, db, user_id):
         if self.image.data:
@@ -66,8 +66,8 @@ class AddToTreeForm(FlaskForm):
             filename = 'default.png'
         user = User.query.filter_by(id=user_id).first()
         human = Human(name = self.name.data,
-                      parent_id_1 = self.first_parent.data,
-                      parent_id_2 = self.second_parent.data,
+                      parent_id_1 = self.add_first_parent.data,
+                      parent_id_2 = self.add_second_parent.data,
                       is_alive = self.is_alive.data,
                       date_of_birthday = self.date_of_birthday.data,
                       description = self.description.data,
@@ -85,56 +85,52 @@ class AddToTreeForm(FlaskForm):
         if not recursion_check(db, human.id, parents):
             db.session.delete(human)
             db.session.commit()
-            # ???
-            self.errors.add_submit.append('Невозможно отобразить данные')
 
 class RemoveFromTreeForm(FlaskForm):
-    humans = RadioField('Remove', choices=[])
-    remove_submit = SubmitField('Submit')
+    remove_humans_list = RadioField('Удалить', choices=[])
+    remove_submit = SubmitField('Удалить')
 
     def addChoices(self, choices):
-        self.humans.choices = choices[1:]
+        self.remove_humans_list.choices = choices[1:]
 
     def removeHumanFromDb(self, db):
-        human = Human.query.filter_by(id=self.humans.data).first()
+        human = Human.query.filter_by(id=self.remove_humans_list.data).first()
         db.session.delete(human)
-        db.session.query(Human).filter_by(parent_id_1=self.humans.data).update({Human.parent_id_1: 0})
-        db.session.query(Human).filter_by(parent_id_2=self.humans.data).update({Human.parent_id_2: 0})
+        db.session.query(Human).filter_by(parent_id_1=self.remove_humans_list.data).update({Human.parent_id_1: 0})
+        db.session.query(Human).filter_by(parent_id_2=self.remove_humans_list.data).update({Human.parent_id_2: 0})
         db.session.commit()
 
 
 class ChangeInTreeForm(FlaskForm):
-    humans = RadioField('Change', choices=[])
-    first_parent = RadioField('First parent', choices=[], default='0')
-    second_parent = RadioField('Second parent', choices=[], default='0')
-    name = StringField('Name', validators=[DataRequired()])
-    is_alive = BooleanField('Alive')
-    date_of_birthday = DateField('Birthday')
-    date_of_death = DateField('Death')
-    description = TextAreaField('Description')
-    image = FileField('image', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
-    change_submit = SubmitField('Submit')
+    change_humans_list = RadioField('Изменить', choices=[])
+    change_first_parent = RadioField('Первый родитель', choices=[], default='0')
+    change_second_parent = RadioField('Второй родитель', choices=[], default='0')
+    name = StringField('Имя', validators=[DataRequired('Это поле должно быть заполнено')])
+    is_alive = BooleanField('Жив')
+    date_of_birthday = DateField('Дата рождения', validators=[DataRequired()])
+    date_of_death = DateField('Дата смерти')
+    description = TextAreaField('Описание')
+    image = FileField('Фото', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    change_submit = SubmitField('Изменить')
 
     def addChoices(self, choices):
-        self.humans.choices = choices[1:]
-        self.first_parent.choices = choices
-        self.second_parent.choices = choices
+        self.change_humans_list.choices = choices[1:]
+        self.change_first_parent.choices = choices
+        self.change_second_parent.choices = choices
         if len(choices) > 1:
-            self.humans.default = choices[1][0]
+            self.change_humans_list.default = choices[1][0]
 
     def changeHumanInDb(self, db):
         parents = []
-        if int(self.first_parent.data):
-            parents.append(int(self.first_parent.data))
-        if int(self.second_parent.data):
-            parents.append(int(self.second_parent.data))
-        if not recursion_check(db, int(self.humans.data), parents):
-            # ???
-            self.change_submit.errors.append('Невозможно отобразить данные')
+        if int(self.change_first_parent.data):
+            parents.append(int(self.change_first_parent.data))
+        if int(self.change_second_parent.data):
+            parents.append(int(self.change_second_parent.data))
+        if not recursion_check(db, int(self.change_humans_list.data), parents):
             return
         update_dict = {Human.name: self.name.data,
-                       Human.parent_id_1: self.first_parent.data,
-                       Human.parent_id_2: self.second_parent.data,
+                       Human.parent_id_1: self.change_first_parent.data,
+                       Human.parent_id_2: self.change_second_parent.data,
                        Human.is_alive: self.is_alive.data,
                        Human.date_of_birthday: self.date_of_birthday.data,
                        Human.description: self.description.data}
@@ -147,5 +143,5 @@ class ChangeInTreeForm(FlaskForm):
             update_dict[Human.date_of_death] = None
         else:
             update_dict[Human.date_of_death] = self.date_of_death.data
-        db.session.query(Human).filter_by(id=self.humans.data).update(update_dict)
+        db.session.query(Human).filter_by(id=self.change_humans_list.data).update(update_dict)
         db.session.commit()
