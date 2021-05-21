@@ -93,20 +93,26 @@ document.ready = function() {
     });
     famdata.forEach(human => {
       if(human.id == choosenHumanID) {
-        console.log(human);
+        console.log(human.parents);
         if(human.parents != undefined) {
-          document.querySelectorAll(".change-human .change-first-parent input").forEach(item => {
+          document.querySelectorAll(".change-human .change-first-parent input[type=radio]").forEach(item => {
             if(item.value == human.parents[0])
               item.checked = 1;
           });
-          document.querySelectorAll(".change-human .change-second-parent input").forEach(item => {
-            if(item.value == human.parents[1])
-              item.checked = 1;
-          });
+          if(human.parents.length == 2) {
+            console.log(human.parents[1]);
+            document.querySelectorAll(".change-human .change-second-parent input[type=radio]").forEach(item => {
+              if(item.value == human.parents[1])
+                item.checked = 1;
+            });
+          }
+          else {
+            document.querySelectorAll(".change-human .change-second-parent input[type=radio]")[0].checked = 1;
+          }
         }
         else {
-          document.querySelector(".change-human .change-first-parent input").checked = 1;
-          document.querySelector(".change-human .change-second-parent input").checked = 1;
+          document.querySelectorAll(".change-human .change-first-parent input[type=radio]")[0].checked = 1;
+          document.querySelectorAll(".change-human .change-second-parent input[type=radio]")[0].checked = 1;
         }
         document.querySelector(".change-human #name").value = human.title;
         document.querySelector(".change-human #description").value = human.description;
